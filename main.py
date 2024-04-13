@@ -4,7 +4,7 @@ import labels
 
 lines = []
 
-basic_syntax = re.compile("^\s*(\w+):?\s*(\-?\w*)?($|\s*//)")
+basic_syntax = re.compile("^\s*(\w+):?\s*(\-?\w*)?\s*$")
 label_syntax = re.compile("^(\s*(\w)+)\:")
 blank_line = re.compile("^\s*$")
 split_lines = [] 
@@ -22,7 +22,8 @@ for line in file:
             else:
                 labels.labels[split_line[0]] = len(lines)
         else:
-            print("syntax error")
+        
+            print(f'syntax error {line_nocomment}')
 
 for current_line, line in enumerate(lines):
     if(split_lines[current_line][0] in dictionaries.instruction_set):
