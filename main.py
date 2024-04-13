@@ -19,7 +19,6 @@ for line in file:
             if(label_syntax.match(split_line[0]) is None):
                 lines.append(line_nocomment)
                 split_lines.append(split_line)
-                    #print(line)
             else:
                 labels.labels[split_line[0]] = len(lines)
         else:
@@ -28,5 +27,5 @@ for line in file:
 for current_line, line in enumerate(lines):
     if(split_lines[current_line][0] in dictionaries.instruction_set):
         dictionaries.instruction_set[split_lines[current_line][0]](split_lines[current_line], [])
-    else:
+    else: 
         print("instruction not found")
