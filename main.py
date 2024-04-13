@@ -28,4 +28,4 @@ for current_line, line in enumerate(lines):
     if(split_lines[current_line][0] in dictionaries.instruction_set):
         dictionaries.instruction_set[split_lines[current_line][0]](split_lines[current_line], [])
     else: 
-        print("instruction not found")
+        print("instruction not found ")
