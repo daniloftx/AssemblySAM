@@ -23,7 +23,10 @@ instruction_set = {
     "STOREABS": instructions.storeabs,
     "PUSHOFF": instructions.pushoff,
     "STOREOFF": instructions.storeoff,
-    "POPFB": instructions.popfbr,
+    "POPFBR": instructions.popfbr,
     "PUSHIMM": instructions.pushimm,
-    "ADDSP": instructions.addsp
+    "ADDSP": instructions.addsp,
+    "PUSHSP": instructions.pushsp,
+    "POPSP": instructions.popsp,
+    "UNLINK": instructions.unlink
 }

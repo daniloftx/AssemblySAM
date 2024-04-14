@@ -1,13 +1,15 @@
 import re 
 import dictionaries
-import labels
+import program
 
 lines = []
+split_lines = [] 
+
+control = program.Program()
 
 basic_syntax = re.compile("^\s*(\w+):?\s*(\-?\w*)?\s*$")
 label_syntax = re.compile("^(\s*(\w)+)\:")
 blank_line = re.compile("^\s*$")
-split_lines = [] 
 
 file = open("teste.txt", "r")
 
@@ -20,13 +22,17 @@ for line in file:
                 lines.append(line_nocomment)
                 split_lines.append(split_line)
             else:
-                labels.labels[split_line[0]] = len(lines)
+                control.labels[split_line[0]] = len(lines)
         else:
         
             print(f'syntax error {line_nocomment}')
 
+file.close()
+print(control.labels)
 for current_line, line in enumerate(lines):
     if(split_lines[current_line][0] in dictionaries.instruction_set):
-        dictionaries.instruction_set[split_lines[current_line][0]](split_lines[current_line], [])
+        dictionaries.instruction_set[split_lines[current_line][0]](split_lines[current_line], control)
     else: 
         print("instruction not found ")
+
+print(control.stack)
