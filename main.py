@@ -28,10 +28,9 @@ for line in file:
             print(f'syntax error {line_nocomment}')
 
 file.close()
-print(control.labels)
-for current_line, line in enumerate(lines):
-    if(split_lines[current_line][0] in dictionaries.instruction_set):
-        dictionaries.instruction_set[split_lines[current_line][0]](split_lines[current_line], control)
+while control.halt == 0:
+    if(split_lines[control.pc][0] in dictionaries.instruction_set):
+        dictionaries.instruction_set[split_lines[control.pc][0]](split_lines[control.pc], control)
     else: 
         print("instruction not found ")
 

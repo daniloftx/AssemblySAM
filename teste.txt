@@ -1,24 +1,18 @@
-      //Estrutura condicional
-// int x=-8,y=10;
-// if (x >= 0) return 1;
-// return y;
-
-    ADDSP 1//
-	PUSHIMM -80
-	PUSHIMM 10
-	STOREABS 2
-	STOREABS 1
-	PUSHABS 1 //CARREGA x NA PILHA
-	PUSHIMM 0
-	LESS
- 
-	JUMPC ENDIF
-	PUSHIMM 1
-	STOREABS 0
-	ADDSP -2
-	STOP
-ENDIF:
-	PUSHABS 2	//CARREGO Y NA PILHA
-	STOREABS 0
-	ADDSP -2
-	STOP
+// int main(){
+// 	int x=5,y=10;
+// 	return (x+y);
+// }
+PUSHIMM 0
+LINK		//Stack[sp] = FBR; FBR = SP; SP++
+ADDSP 2
+PUSHIMM 5
+PUSHIMM 10
+STOREOFF 2
+STOREOFF 1
+PUSHOFF 1
+PUSHOFF 2
+ADD
+STOREOFF -1
+ADDSP -2
+POPFBR
+STOP
