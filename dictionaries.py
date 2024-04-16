@@ -28,5 +28,6 @@ instruction_set = {
     "ADDSP": instructions.addsp,
     "PUSHSP": instructions.pushsp,
     "POPSP": instructions.popsp,
-    "UNLINK": instructions.unlink
+    "UNLINK": instructions.unlink,
+    "JUMPIND": instructions.jumpind
 }

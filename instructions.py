@@ -177,7 +177,7 @@ def jumpc(line, control):
         print(f'{line[0]} error')
     else:
         vt = control.pop()
-
+        control.sp -= 1
         if(vt != 0):
             n = line[1].lstrip('-')
 
@@ -223,6 +223,18 @@ def jsr(line, control):
 
         control.sp += 1
 
+def jumpind(line, control):
+    if len(line) > 1:
+        print(f'{line[0]} error')
+        control.halt = 1
+    else:
+        control.sp -= 1
+        vt = control.stack.pop()
+        if vt < 0:
+            print(f'Invalid PC {control.pc} address')
+        else:
+            control.pc = vt - 1
+            
 def skip(line, control):
     print("skip func")
 
@@ -265,7 +277,21 @@ def pushabs(line, control):
             control.halt = 1
 
 def storeabs(line, control):
-    print("storeabs func")
+    if len(line) < 2:
+        print(f'{line[0]} error')
+        control.halt = 1
+    else: 
+        n = line[1].lstrip('-')
+        if n.isdigit():
+            if line[1][0] == '-':
+                print(f'{line[0]} error')
+                control.halt = 1
+            else:
+                control.stack[ int(n)] = control.pop()
+            control.sp -= 1
+        else:
+            print(f'{line[0]} error')
+            control.halt = 1
 
 #relative store
 def pushoff(line, control):
@@ -320,6 +346,8 @@ def popfbr(line, control):
             control.halt = 1
         else:
             control.fbr = control.stack[control.sp-1]
+            control.stack.pop()
+            control.sp -= 1
 
 def pushfbr(line, control):
     if len(line) > 1:
@@ -332,6 +360,7 @@ def pushfbr(line, control):
 def pushimm(line, control):
     n = line[1].lstrip('-')
     if n.isdigit():
+        control.sp += 1
         if line[1][0] == '-':
             control.stack.append(int(n) * -1)
         else:
@@ -347,18 +376,25 @@ def addsp(line, control):
         control.halt = 1
     else: 
         n = line[1].lstrip('-')
+        i = 0
         if n.isdigit():
             if line[1][0] == '-':
-                control.sp -= int(n)
+                for i in range(int(n)):
+                    control.sp -= 1
+                    if control.sp < 0:
+                        print(f'{line[0]} error')
+                        control.halt = 1
+                    else:
+                        control.stack.pop(control.sp)
             else:
-                control.sp += int(n)
-            if control.sp < 0:
-                print(f'{line[0]} error')
-                control.halt = 1
+                for i in range(int(n)):
+                    control.sp += 1
+                    control.stack.append(0)
+            
         else:
             print(f'{line[0]} error')
             control.halt = 1
-
+    
 
 def pushsp(line, control):
     if len(line) > 1:

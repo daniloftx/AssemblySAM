@@ -32,6 +32,9 @@ control.length = len(lines)
 # Impedir a execução se houver alguma instrução que não existe.
 while control.halt == 0:
     if(split_lines[control.pc][0] in dictionaries.instruction_set):
+        print(control.stack)
+        print(control.sp)
+        print(control.fbr)
         dictionaries.instruction_set[split_lines[control.pc][0]](split_lines[control.pc], control)
         control.pc += 1
     else: 
