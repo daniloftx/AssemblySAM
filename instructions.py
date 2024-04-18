@@ -2,17 +2,18 @@
 
 def add(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         control.stack.append(control.pop() + control.pop())
-
         control.sp -= 1
 
 def sub(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         vt = control.pop()
         vb = control.pop()
@@ -23,8 +24,9 @@ def sub(line, control):
 
 def times(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         control.stack.append(control.pop() * control.pop())
 
@@ -32,8 +34,9 @@ def times(line, control):
 
 def div(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         vt = control.pop()
         vb = control.pop()
@@ -44,8 +47,9 @@ def div(line, control):
 
 def mod(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         vt = control.pop()
         vb = control.pop()
@@ -57,8 +61,9 @@ def mod(line, control):
 #Comparison
 def cmp(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         vt = control.pop()
         vb = control.pop()
@@ -74,8 +79,9 @@ def cmp(line, control):
 
 def greater(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         vt = control.pop()
         vb = control.pop()
@@ -89,8 +95,9 @@ def greater(line, control):
 
 def less(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         vt = control.pop()
         vb = control.pop()
@@ -104,8 +111,9 @@ def less(line, control):
 
 def equal(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         vt = control.pop()
         vb = control.pop()
@@ -119,8 +127,9 @@ def equal(line, control):
 
 def isnil(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         if control.pop() == 0:
             control.stack.append(1)
@@ -129,8 +138,9 @@ def isnil(line, control):
 
 def ispos(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         if control.pop() > 0:
             control.stack.append(1)
@@ -139,8 +149,9 @@ def ispos(line, control):
 
 def isneg(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         if control.pop() < 0:
             control.stack.append(1)
@@ -150,16 +161,20 @@ def isneg(line, control):
 #jumps
 def jump(line, control):
     if len(line) < 2:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too few arguments.')
+        control.halt = 1
+        control.error = True
     else:
         n = line[1].lstrip('-')
         if n.isdigit():
             if int(n) > control.length - 1:
                 print(f'Processor Error: Invalid index at instruction {control.pc}.')
+                control.error = True
                 exit(1)
 
             if line[1][0] == '-':
-                print(f'{line[0]} error')
+                print(f'Error in instruction "{line[0]}" not expecting negative number.')
+                control.error = True
                 control.halt = 1
             else:
                 # Subtract 1 because pc will be incremented after this function execution
@@ -170,11 +185,14 @@ def jump(line, control):
                 control.pc = control.labels[n+':'] - 1
             else: 
                 print(f'Processor Error: Unresolved reference "{n}" at instruction {control.pc}.')
+                control.error = True
                 exit(1)
 
 def jumpc(line, control):
     if len(line) < 2:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too few arguments.')
+        control.halt = 1
+        control.error = True
     else:
         vt = control.pop()
         control.sp -= 1
@@ -183,8 +201,9 @@ def jumpc(line, control):
 
             if n.isdigit():
                 if line[1][0] == '-':
-                    print(f'{line[0]} error')
+                    print(f'Error in instruction "{line[0]}" not expecting negative number.')
                     control.halt = 1
+                    control.error = True
                 else:              
                     # Subtract 1 because pc will be incremented after this function execution
                     control.pc = int(n) - 1
@@ -194,17 +213,21 @@ def jumpc(line, control):
                     control.pc = control.labels[n+':'] - 1
                 else: 
                     print(f'Processor Error: Unresolved reference "{n}" at instruction {control.pc}.')
+                    control.error = True
                     exit(1)
 
 def jsr(line, control):
     if len(line) < 2:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too few arguments.')
+        control.halt = 1
+        control.error = True
     else:
         n = line[1].lstrip('-')
 
         if n.isdigit():
             if line[1][0] == '-':
-                print(f'{line[0]} error')
+                print(f'Error in instruction "{line[0]}" not expecting negative number.')
+                control.error = True
                 control.halt = 1
             else:
                 control.stack.append(control.pc + 1)
@@ -219,30 +242,32 @@ def jsr(line, control):
                 control.pc = control.labels[n+':'] - 1
             else: 
                 print(f'Processor Error: Unresolved reference "{n}" at instruction {control.pc}.')
+                control.error = True
                 exit(1)
 
         control.sp += 1
 
 def jumpind(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         control.sp -= 1
-        vt = control.stack.pop()
+        vt = control.pop()
         if vt < 0:
             print(f'Invalid PC {control.pc} address')
+            control.error = True
+            control.halt = 1
         else:
             control.pc = vt - 1
-            
-def skip(line, control):
-    print("skip func")
 
 #stack frames
 def link(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         control.stack.append(control.fbr)
         control.fbr = control.sp
@@ -254,96 +279,115 @@ def unlink(line, control):
 #stop
 def stop(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
+        control.error = True
     control.halt = 1
 
 
 #absolute store
 def pushabs(line, control):
     if len(line) < 2:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too few arguments.')
         control.halt = 1
+        control.error = True
+        
     else: 
         n = line[1].lstrip('-')
         if n.isdigit():
             if line[1][0] == '-':
-                print(f'{line[0]} error')
+                print(f'Error in instruction "{line[0]}" not expecting negative number.')
                 control.halt = 1
+                control.error = True
             else:
                 control.stack.append(control.stack[ int(n)])
             control.sp += 1
         else:
-            print(f'{line[0]} error')
+            print(f'Error in instruction "{line[0]}" expecting a number')
             control.halt = 1
+            control.error = True
 
 def storeabs(line, control):
     if len(line) < 2:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too few arguments.')
         control.halt = 1
+        control.error = True
+        
     else: 
         n = line[1].lstrip('-')
         if n.isdigit():
             if line[1][0] == '-':
-                print(f'{line[0]} error')
+                print(f'Error in instruction "{line[0]}" not expecting negative number.')
                 control.halt = 1
+                control.error = True
             else:
                 control.stack[ int(n)] = control.pop()
             control.sp -= 1
         else:
-            print(f'{line[0]} error')
+            print(f'Error in instruction "{line[0]}" expecting a number')
             control.halt = 1
+            control.error = True
 
 #relative store
 def pushoff(line, control):
     if len(line) < 2:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too few arguments.')
         control.halt = 1
+        control.error = True
+        
     else: 
         n = line[1].lstrip('-')
         if n.isdigit():
             if line[1][0] == '-':
                 v = control.fbr - int(n)
                 if v < 0:
-                    print(f'{line[0]} error')
+                    print(f'Error in instruction "{line[0]}" FBR cannot be negative.')
                     control.halt = 1
+                    control.error = True
                 else:   
                     control.stack.append(control.stack[v])
             else:
                 control.stack.append(control.stack[control.fbr + int(n)])
             control.sp += 1
         else:
-            print(f'{line[0]} error')
+            print(f'Error in instruction "{line[0]}" expecting a number')
             control.halt = 1
+            control.error = True
 
 def storeoff(line, control):
     if len(line) < 2:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too few arguments.')
         control.halt = 1
+        control.error = True
+        
     else: 
         n = line[1].lstrip('-')
         if n.isdigit():
             if line[1][0] == '-':
                 v = control.fbr - int(n)
                 if v < 0:
-                    print(f'{line[0]} error')
+                    print(f'Error in instruction "{line[0]}" FBR cannot be negative.')
                     control.halt = 1
+                    control.error = True
                 else:   
-                    control.stack[v] = control.stack.pop()
+                    control.stack[v] = control.pop()
             else:
-                control.stack[control.fbr + int(n)] = control.stack.pop()
+                control.stack[control.fbr + int(n)] = control.pop()
             control.sp -= 1
         else:
-            print(f'{line[0]} error')
+            print(f'Error in instruction "{line[0]}" expecting a number')
             control.halt = 1
+            control.error = True
 
 def popfbr(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         if control.sp - 1 < 0:
-            print(f'{line[0]} error')
+            print(f'Error in instruction "{line[0]}" SP cannot be negative.')
             control.halt = 1
+            control.error = True
         else:
             control.fbr = control.stack[control.sp-1]
             control.stack.pop()
@@ -351,8 +395,9 @@ def popfbr(line, control):
 
 def pushfbr(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         control.stack.append(control.fbr)
         control.sp += 1
@@ -366,14 +411,17 @@ def pushimm(line, control):
         else:
             control.stack.append(int(n))
     else:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" expecting a number')
         control.halt = 1
+        control.error = True
 
 #addsp
 def addsp(line, control):
     if len(line) < 2:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too few arguments.')
         control.halt = 1
+        control.error = True
+        
     else: 
         n = line[1].lstrip('-')
         i = 0
@@ -382,36 +430,41 @@ def addsp(line, control):
                 for i in range(int(n)):
                     control.sp -= 1
                     if control.sp < 0:
-                        print(f'{line[0]} error')
+                        print(f'Error in instruction "{line[0]}" SP cannot be negative.')
                         control.halt = 1
+                        control.error = True
                     else:
-                        control.stack.pop(control.sp)
+                        control.pop()
             else:
                 for i in range(int(n)):
                     control.sp += 1
                     control.stack.append(0)
             
         else:
-            print(f'{line[0]} error')
+            print(f'Error in instruction "{line[0]}" expecting a number')
             control.halt = 1
+            control.error = True
     
 
 def pushsp(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         control.stack.append(control.sp)
         control.sp += 1
 
 def popsp(line, control):
     if len(line) > 1:
-        print(f'{line[0]} error')
+        print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
+        control.error = True
     else:
         control.sp -= 1
         if control.sp < 0:
-            print(f'{line[0]} error')
+            print(f'Error in instruction "{line[0]}" SP cannot be negative.')
             control.halt = 1
+            control.error = True
         else:
             control.sp = control.stack[control.sp]

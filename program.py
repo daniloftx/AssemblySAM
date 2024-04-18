@@ -7,11 +7,13 @@ class Program:
         self.length = 0
         self.stack = []
         self.labels = {}
+        self.error = False
     
     def pop(self):
         if len(self.stack):
             return self.stack.pop()
         else:
             print(f'Processor Error: Stack Underflow at instruction {self.pc}.')
+            self.error = True
             exit(1)
         

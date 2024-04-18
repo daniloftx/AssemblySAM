@@ -16,7 +16,6 @@ instruction_set = {
     "JUMP": instructions.jump,
     "JUMPC": instructions.jumpc,
     "JSR": instructions.jsr,
-    "SKIP": instructions.skip,
     "LINK": instructions.link,
     "STOP": instructions.stop,
     "PUSHABS": instructions.pushabs,

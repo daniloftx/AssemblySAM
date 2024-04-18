@@ -15,7 +15,7 @@ MAIN:
 	JSR SOMA	//Stack[SP] = PC +1;SP++; PC = LABEL
 	POPFBR
 	ADDSP -2
-	STOP
+	STOP 
 
 SOMA:
 	ADDSP 1
