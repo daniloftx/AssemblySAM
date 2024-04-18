@@ -12,7 +12,7 @@ basic_syntax = re.compile("^\s*(\w+):?\s*(\-?\w*)?\s*$")
 label_syntax = re.compile("^(\s*(\w)+)\:")
 blank_line = re.compile("^\s*$")
 
-with open("teste.txt", "r") as file:
+with open("input.txt", "r") as file:
     for line in file:
         line_nocomment = re.sub("\/{2}.*", "", line)
 
@@ -27,7 +27,7 @@ with open("teste.txt", "r") as file:
             else:
                 print(f'syntax error in line "{line_nocomment.strip()}"')
                 control.halt = 1
-                control.syntax_error = True
+                control.error = True
 
 control.length = len(lines)
 
