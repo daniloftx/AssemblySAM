@@ -43,7 +43,7 @@ while control.halt == 0:
         exit(1)
 if not control.error:
     if len(control.stack) != 0:
-        print(f'Exit Code: {control.stack[0]}')
+        print(f'Stack output: {control.stack[0]}')
     else:
         print(f'Exit Code: 0')
     
