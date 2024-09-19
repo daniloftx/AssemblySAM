@@ -9,7 +9,29 @@ def add(line, control):
         control.stack.append(control.pop() + control.pop())
         control.sp -= 1
 
+def addf(line, control):
+    if len(line) > 1:
+        print(f'Error in instruction "{line[0]}" too many arguments.')
+        control.halt = 1
+        control.error = True
+    else:
+        control.stack.append(control.pop() + control.pop())
+        control.sp -= 1
+
 def sub(line, control):
+    if len(line) > 1:
+        print(f'Error in instruction "{line[0]}" too many arguments.')
+        control.halt = 1
+        control.error = True
+    else:
+        vt = control.pop()
+        vb = control.pop()
+
+        control.stack.append(vb - vt)
+
+        control.sp -= 1
+
+def subf(line, control):
     if len(line) > 1:
         print(f'Error in instruction "{line[0]}" too many arguments.')
         control.halt = 1
@@ -32,6 +54,16 @@ def times(line, control):
 
         control.sp -= 1
 
+def timesf(line, control):
+    if len(line) > 1:
+        print(f'Error in instruction "{line[0]}" too many arguments.')
+        control.halt = 1
+        control.error = True
+    else:
+        control.stack.append(control.pop() * control.pop())
+
+        control.sp -= 1
+
 def div(line, control):
     if len(line) > 1:
         print(f'Error in instruction "{line[0]}" too many arguments.')
@@ -42,6 +74,19 @@ def div(line, control):
         vb = control.pop()
 
         control.stack.append(vb // vt)
+
+        control.sp -= 1
+
+def divf(line, control):
+    if len(line) > 1:
+        print(f'Error in instruction "{line[0]}" too many arguments.')
+        control.halt = 1
+        control.error = True
+    else:
+        vt = control.pop()
+        vb = control.pop()
+
+        control.stack.append(vb / vt)
 
         control.sp -= 1
 
@@ -415,6 +460,19 @@ def pushimm(line, control):
         control.halt = 1
         control.error = True
 
+#insertion float
+def pushimmf(line, control):
+    n = line[1].lstrip('-')
+    try:
+        control.sp += 1
+        if line[1][0] == '-':
+            control.stack.append(float(n) * -1)
+        else:
+            control.stack.append(float(n))
+    except:
+        print(f'Error in instruction "{line[0]}" expecting a floating point number')
+        control.halt = 1
+        control.error = True
 #addsp
 def addsp(line, control):
     if len(line) < 2:

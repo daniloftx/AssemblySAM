@@ -8,7 +8,7 @@ split_lines = []
 control = program.Program()
 
 
-basic_syntax = re.compile("^\s*(\w+):?\s*(\-?\w*)?\s*$")
+basic_syntax = re.compile("^\s*(\w+):?\s*(\-?\w*\.?\w*)?\s*$")
 label_syntax = re.compile("^(\s*(\w)+)\:")
 blank_line = re.compile("^\s*$")
 
@@ -37,6 +37,8 @@ control.length = len(lines)
 while control.halt == 0:
     if(split_lines[control.pc][0] in dictionaries.instruction_set):
         dictionaries.instruction_set[split_lines[control.pc][0]](split_lines[control.pc], control)
+        #print(control.stack)
+       # print(control.sp)
         control.pc += 1
     else: 
         print(f'Assembler Error: Unknown instruction "{split_lines[control.pc][0]}".')
